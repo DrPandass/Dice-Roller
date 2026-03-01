@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dice Roller</title>
+   <style> body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #870101, #170000);
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: rgb(67, 15, 19);
+}
+
+.container {
+    background: #000000;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 0 30px rgba(203, 203, 203, 0.6);
+    text-align: center;
+    width: 400px;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+button {
+    padding: 10px 15px;
+    margin: 5px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background: #ffffff;
+    color: rgb(255, 53, 70);
+    transition: all 0.2s ease;
+}
+
+button:hover {
+    background: #2b0000;
+    transform: scale(1.05);
+}
+
+#result {
+    font-size: 60px;
+    margin-top: 30px;
+    font-weight: bold;
+    color: #510d0d;
+    transition: 0.2s ease;
+}
+</style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🎲 Dice Roller 🎲</h1>
+
+        <p>SELECT A DIE:</p>
+
+        <div>
+            <button onclick="selectDie(4)">d4</button>
+            <button onclick="selectDie(6)">d6</button>
+            <button onclick="selectDie(8)">d8</button>
+            <button onclick="selectDie(10)">d10</button>
+            <button onclick="selectDie(12)">d12</button>
+            <button onclick="selectDie(20)">d20</button>
+        </div>
+
+        <h2 id="currentDie">Current Die: None</h2>
+        <p>Press NUMPAD "-" to roll</p>
+
+        <div id="result">-</div>
+
+        <h3>⚚ A Beginner Hack-Club Project by Leviathan ⚚</h3>
+    </div>
+</body>
+    <script>
+        let currentDie = null;
+
+        function selectDie(sides) {
+            currentDie = sides;
+            document.getElementById("currentDie").textContent = 
+                "Current Die: d" + sides;
+        }
+
+        function rollDie() {
+            if (!currentDie) {
+                alert("Select a die first!");
+                return;
+            }
+
+            const roll = Math.floor(Math.random() * currentDie) + 1;
+            document.getElementById("result").textContent = roll;
+        }
+
+        document.addEventListener("keydown", function(event) {
+            // Detect NUMPAD minus specifically
+            if (event.code === "NumpadSubtract") {
+                rollDie();
+            }
+        });
+    </script>
+
+</body>
+</html>
