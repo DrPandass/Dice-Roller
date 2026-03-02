@@ -1,56 +1,73 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Dice Roller</title>
-   <style> body {
-    margin: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(135deg, #870101, #170000);
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    color: rgb(67, 15, 19);
-}
+    <title>Dice Roller - Leviathan</title>
 
-.container {
-    background: #000000;
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 0 30px rgba(203, 203, 203, 0.6);
-    text-align: center;
-    width: 400px;
-}
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #870101, #170000);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            color: white;
+        }
 
-h1 {
-    margin-bottom: 20px;
-}
+        .container {
+            background: #000000;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(203, 203, 203, 0.6);
+            text-align: center;
+            width: 400px;
+        }
 
-button {
-    padding: 10px 15px;
-    margin: 5px;
-    font-size: 16px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    background: #ffffff;
-    color: rgb(255, 53, 70);
-    transition: all 0.2s ease;
-}
+        h1 {
+            margin-bottom: 20px;
+        }
 
-button:hover {
-    background: #2b0000;
-    transform: scale(1.05);
-}
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background: #ffffff;
+            color: rgb(255, 53, 70);
+            transition: all 0.2s ease;
+        }
 
-#result {
-    font-size: 60px;
-    margin-top: 30px;
-    font-weight: bold;
-    color: #510d0d;
-    transition: 0.2s ease;
-}
-</style>
+        button:hover {
+            background: #2b0000;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .selected {
+            background: #ff0000 !important;
+            color: black;
+            transform: scale(1.1);
+        }
+
+        input {
+            margin-top: 10px;
+            padding: 5px;
+            width: 60px;
+            text-align: center;
+            border-radius: 5px;
+            border: none;
+        }
+
+        #result {
+            font-size: 50px;
+            margin-top: 30px;
+            font-weight: bold;
+            color: #ff4444;
+        }
+    </style>
 </head>
 
 <body>
@@ -60,29 +77,39 @@ button:hover {
         <p>SELECT A DIE:</p>
 
         <div>
-            <button onclick="selectDie(4)">d4</button>
-            <button onclick="selectDie(6)">d6</button>
-            <button onclick="selectDie(8)">d8</button>
-            <button onclick="selectDie(10)">d10</button>
-            <button onclick="selectDie(12)">d12</button>
-            <button onclick="selectDie(20)">d20</button>
+            <button class="dieBtn" onclick="selectDie(4, event)">d4</button>
+            <button class="dieBtn" onclick="selectDie(6, event)">d6</button>
+            <button class="dieBtn" onclick="selectDie(8, event)">d8</button>
+            <button class="dieBtn" onclick="selectDie(10, event)">d10</button>
+            <button class="dieBtn" onclick="selectDie(12, event)">d12</button>
+            <button class="dieBtn" onclick="selectDie(20, event)">d20</button>
         </div>
 
         <h2 id="currentDie">Current Die: None</h2>
         <p>Press NUMPAD "-" to roll</p>
 
+        <label>Number of Dice:</label><br>
+        <input type="number" id="diceCount" value="1" min="1" max="20">
+
         <div id="result">-</div>
 
         <h3>⚚ A Beginner Hack-Club Project by Leviathan ⚚</h3>
     </div>
-</body>
+
     <script>
         let currentDie = null;
 
-        function selectDie(sides) {
+        function selectDie(sides, event) {
             currentDie = sides;
-            document.getElementById("currentDie").textContent = 
+
+            document.getElementById("currentDie").textContent =
                 "Current Die: d" + sides;
+
+            document.querySelectorAll(".dieBtn").forEach(btn => {
+                btn.classList.remove("selected");
+            });
+
+            event.target.classList.add("selected");
         }
 
         function rollDie() {
@@ -91,17 +118,23 @@ button:hover {
                 return;
             }
 
-            const roll = Math.floor(Math.random() * currentDie) + 1;
-            document.getElementById("result").textContent = roll;
+            const count = parseInt(document.getElementById("diceCount").value) || 1;
+
+            let total = 0;
+
+            for (let i = 0; i < count; i++) {
+                let roll = Math.floor(Math.random() * currentDie) + 1;
+                total += roll;
+            }
+
+            document.getElementById("result").textContent = total;
         }
 
         document.addEventListener("keydown", function(event) {
-            // Detect NUMPAD minus specifically
             if (event.code === "NumpadSubtract") {
                 rollDie();
             }
         });
     </script>
-
 </body>
 </html>
